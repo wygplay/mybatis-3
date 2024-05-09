@@ -80,4 +80,12 @@ public class PropertyParserTest {
     Assertions.assertThat(PropertyParser.parse("${key?::}", props)).isEqualTo(":");
   }
 
+  @Test
+  public void testExpression() {
+    Properties props = new Properties();
+    props.setProperty(PropertyParser.KEY_ENABLE_DEFAULT_VALUE, "true");
+    props.setProperty(PropertyParser.KEY_DEFAULT_VALUE_SEPARATOR, "?:");
+    Assertions.assertThat(PropertyParser.parse("SELECT * FROM ${schema?:prod}.#{tableName == null ? 'users' : tableName} ORDER BY ${orderColumn}", props)).isEqualTo("SELECT * FROM prod.${tableName == null ? 'users' : tableName} ORDER BY ${orderColumn}");
+  }
+
 }
